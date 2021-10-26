@@ -1,5 +1,14 @@
-exports.getPositions = (req, res) => {
-  res.send('position')
+const knex = require('knex')
+const knexConfig = require('../../knexfile')
+const knexConnection = knex(knexConfig.development)
+
+exports.getPositions = async (req, res) => {
+  try { 
+    let data = await knexConnection.select().table('jobs')
+    res.send(data)
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 exports.getPosition = (req, res) => {
