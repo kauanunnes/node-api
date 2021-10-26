@@ -19,10 +19,10 @@ router.patch('/sector/', sectorController.editSector)
 router.delete('/sector/', sectorController.deleteSector)
 
 
-router.get('/position', jobController.getPosition)
-router.get('/position/:id', jobController.getPosition)
-router.put('/position/', jobController.createPosition)
-router.patch('/position/:id', jobController.editPosition)
-router.delete('/position/:id', jobController.deletePosition)
+router.get('/job', jobController.getJobs)
+router.get('/job/:id', jobController.getJob)
+router.put('/job/', jobController.createJob)
+router.patch('/job/', jobController.editJob)
+router.delete('/job/', jobController.deleteJob)
 
 module.exports = router
