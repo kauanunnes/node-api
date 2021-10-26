@@ -8,8 +8,8 @@ const router = express.Router()
 router.get('/user', userController.getUsers)
 router.get('/user/:id', userController.getUser)
 router.put('/user/', userController.createUser)
-router.patch('/user/:id', userController.editUser)
-router.delete('/user/:id', userController.deleteUser)
+router.patch('/user/', userController.editUser)
+router.delete('/user/', userController.deleteUser)
 
 
 router.get('/sector', sectorController.getSectors)
