@@ -3,9 +3,11 @@ const path = require('path')
 require('dotenv').config()
 
 module.exports = {
-  main: {
+  development: {
     client: "pg",
     connection: {
+      address:'localhost',
+      port: '3001',
       database: process.env.DATABASE_NAME,
       user:     process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD
@@ -19,7 +21,7 @@ module.exports = {
       directory: path.resolve(__dirname, "src", "database", "migrations"),
     },
     seeds: {
-      tableName: "knex_migrations",
+      tableName: "knex_seeds",
       directory: path.resolve(__dirname, "src", "database", "seeds"),
     },
   },
