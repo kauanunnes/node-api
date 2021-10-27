@@ -4,10 +4,11 @@ const app = express()
 
 const port = 3000
 
-app.get('/', (req, res) => {
-  res.send('deu bom').status(200)
+app.listen(port, () => {
+  console.log(`I'm listening on http://localhost:${port}`);
 })
 
-app.listen(port, () => {
-  console.log(`Eu estou escutando na porta ${port}`);
-})
+const router = require('./src/router')
+
+app.use(express.urlencoded({ extended: true }))
+app.use('/', router)
