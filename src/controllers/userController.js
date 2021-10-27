@@ -70,7 +70,6 @@ module.exports = {
       }
       
       const hash = bcrypt.hashSync(password, 10);
-      console.log(hash);
       const data = await knexConnection.insert({
         name,
         login,
