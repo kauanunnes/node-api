@@ -2,14 +2,17 @@ const express = require('express')
 const userController = require('./controllers/userController')
 const sectorController = require('./controllers/sectorController')
 const jobController = require('./controllers/jobController')
+const auth = require('./middlewares/auth')
+const authController = require('./controllers/authController')
 
 const router = express.Router()
 
 router.get('/user', userController.getUsers)
-router.get('/user/:id', userController.getUser)
-router.put('/user/', userController.createUser)
-router.patch('/user/', userController.editUser)
-router.delete('/user/', userController.deleteUser)
+router.get('/user/:id',  userController.getUser)
+router.put('/user/', auth, userController.createUser)
+router.patch('/user/', auth, userController.editUser)
+router.delete('/user/', auth, userController.deleteUser)
+router.post('/user/login', authController)
 
 
 router.get('/sector', sectorController.getSectors)

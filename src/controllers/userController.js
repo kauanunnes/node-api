@@ -2,10 +2,12 @@ const knex = require('knex')
 const knexConfig = require('../../knexfile')
 const knexConnection = knex(knexConfig.development)
 
+
 module.exports = {
   async getUsers(req, res) {
     try {
       let data = await knexConnection.select().table('users')
+
       res.send(data)
     } catch (error) {
       console.log(error);
@@ -34,6 +36,13 @@ module.exports = {
   },
 
   async createUser(req, res) {
+    const isAdmin = req.admin
+
+    if (!isAdmin) {
+      res.status(401).send("You aren't an admin.")
+      return
+    }
+    
     let {
       name,
       login,
@@ -66,7 +75,7 @@ module.exports = {
         phone: phoneArray,
         job
       }).into('users')
-      res.status(200).send(`${name} was created successfully.`)
+      return res.status(200).send(`${name} was created successfully.`)
     } catch (error) {
       console.log(error);
       return
@@ -129,7 +138,12 @@ module.exports = {
   },
 
   async deleteUser(req, res) {
+    const idLoggedUser = req.id
     const id = req.body.id
+    if (idLoggedUser == id) {
+      res.status(400).send("Users cannot do an autodelete.")
+      return 
+    }
 
     if (!id) {
       res.status(400).send('Empty field')
@@ -151,7 +165,6 @@ module.exports = {
       console.log(error);
       return
     }
+  },
 
-
-  }
 }
