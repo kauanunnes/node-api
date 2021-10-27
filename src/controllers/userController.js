@@ -1,6 +1,7 @@
 const knex = require('knex')
 const knexConfig = require('../../knexfile')
 const knexConnection = knex(knexConfig.development)
+const bcrypt = require('bcrypt');
 
 
 module.exports = {
@@ -67,14 +68,17 @@ module.exports = {
         res.status(400).send(`This job doesn't exist`)
         return
       }
-
+      
+      const hash = bcrypt.hashSync(password, 10);
+      console.log(hash);
       const data = await knexConnection.insert({
         name,
         login,
-        password,
+        password: hash,
         phone: phoneArray,
         job
       }).into('users')
+      
       return res.status(200).send(`${name} was created successfully.`)
     } catch (error) {
       console.log(error);

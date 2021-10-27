@@ -1,6 +1,8 @@
 const knex = require('knex')
 const knexConfig = require('../../knexfile')
 const knexConnection = knex(knexConfig.development)
+const bcrypt = require('bcrypt');
+
 
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
@@ -20,11 +22,13 @@ module.exports = async (req, res) => {
       return
     }
 
-    if (data[0].password !== password) {
+    let permission = bcrypt.compareSync(password, data[0].password);;
+
+    if (!permission) {
       res.status(401).send('Invalid password.')
+      return
     }
 
-    console.log(data);
     const token = jwt.sign({login: data[0].login, admin: data[0].admin, id: data[0].id}, process.env.SECRET, {
       expiresIn: 86400,
     })
