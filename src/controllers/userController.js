@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
   async getUsers(req, res) {
     try {
-      let data = await knexConnection.select().table('users')
+      let data = await knexConnection.select('id','name', 'login', 'phone', 'job').table('users')
 
       res.send(data)
     } catch (error) {
@@ -19,7 +19,7 @@ module.exports = {
     const id = req.params.id
 
     try {
-      const user = await knexConnection.select().where({
+      const user = await knexConnection.select('id','name','login','phone','job').where({
         id
       }).table('users')
 

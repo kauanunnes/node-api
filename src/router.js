@@ -5,6 +5,7 @@ const jobController = require('./controllers/jobController')
 const auth = require('./middlewares/auth')
 const authController = require('./controllers/authController')
 
+
 const router = express.Router()
 
 router.get('/user', userController.getUsers)
