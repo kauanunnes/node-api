@@ -18,7 +18,10 @@ module.exports = async (req, res) => {
     const data = await knexConnection.select().where({login}).table('users')
     
     if (data.length === 0) {
-      res.status(400).JSON("ERROR: This user doesn't exist")
+      res.status(400).send({
+        code: 400,
+        message: "This user doesn't exist."
+      })
       return
     }
 
@@ -33,6 +36,9 @@ module.exports = async (req, res) => {
       expiresIn: 86400,
     })
     return res.send({
+      name: data[0].name,
+      job: data[0].job,
+
       token: token
     })      
   } catch (error) {
