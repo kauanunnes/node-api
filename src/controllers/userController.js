@@ -11,6 +11,7 @@ module.exports = {
 
       res.send(data)
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
   },
@@ -31,6 +32,7 @@ module.exports = {
       res.status(200).send(user)
 
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
 
@@ -80,14 +82,24 @@ module.exports = {
       
       return res.status(200).send(`${name} was created successfully.`)
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
       return
     }
   },
 
   async editUser(req, res) {
+    const isAdmin = req.admin
+
+    if (!isAdmin) {
+      res.status(401).send("You aren't an admin.")
+      return
+    }
+    
+
+    const {id} = req.params
+    console.log(req.body);
     let {
-      id,
       name,
       login,
       password,
@@ -121,19 +133,21 @@ module.exports = {
         res.status(400).send(`This job doesn't exist`)
         return
       }
+      const hash = bcrypt.hashSync(password, 10);
 
       const data = await knexConnection.where({
         id
       }).update({
         name,
         login,
-        password,
+        password: hash,
         phone: phoneArray,
         job
       }).table('users')
       res.status(200).send(`${name} was edited successfully.`)
 
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
       return
     }
@@ -141,8 +155,15 @@ module.exports = {
   },
 
   async deleteUser(req, res) {
+    const isAdmin = req.admin
+
+    if (!isAdmin) {
+      res.status(401).send('You need to be an admin to delete others users.')
+      return 
+    }
+
     const idLoggedUser = req.id
-    const id = req.body.id
+    const id = req.params.id
     if (idLoggedUser == id) {
       res.status(400).send("Users cannot do an autodelete.")
       return 
@@ -150,6 +171,7 @@ module.exports = {
 
     if (!id) {
       res.status(400).send('Empty field')
+      
     }
 
     try {
@@ -165,6 +187,7 @@ module.exports = {
       res.status(200).send("This user was deleted")
 
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
       return
     }

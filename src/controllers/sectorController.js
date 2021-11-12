@@ -8,7 +8,8 @@ module.exports = {
       const data = await knexConnection.select().table('sectors')
       res.status(200).send(data)
     } catch (err) {
-      console.log(err);
+      res.status(400).send(error)
+      console.log(error);
     }
   },
 
@@ -27,6 +28,7 @@ module.exports = {
       res.status(200).send(sector)
 
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
   },
@@ -46,12 +48,14 @@ module.exports = {
       console.log(data);
       res.status(200).send(`${name} created successfully`)
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
   },
   async editSector(req, res) {
+    const { id } = req.params
+    
     const {
-      id,
       name
     } = req.body
     try {
@@ -73,12 +77,13 @@ module.exports = {
 
       res.status(200).send(`The sector ${name} was modified`)
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
 
   },
   async deleteSector(req, res) {
-    const id = req.body.id
+    const id = req.params.id
 
     if (!id) {
       res.status(400).send('Empty field')
@@ -95,6 +100,7 @@ module.exports = {
       res.status(200).send("This sector was deleted")
 
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
 

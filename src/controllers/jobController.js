@@ -8,6 +8,7 @@ module.exports = {
       let data = await knexConnection.select().table('jobs')
       res.send(data)
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
   },
@@ -28,6 +29,7 @@ module.exports = {
       res.status(200).send(job)
   
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
   
@@ -56,6 +58,7 @@ module.exports = {
       console.log(data);
       res.status(200).send(`${name} created successfully`)
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
       return
     }
@@ -63,8 +66,9 @@ module.exports = {
   },
 
   async editJob(req, res) {
+    const { id } = req.params
+    
     const {
-      id,
       name,
       sector
     } = req.body
@@ -95,6 +99,7 @@ module.exports = {
 
       res.status(200).send(`The sector ${name} was modified`)
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
     }
 
@@ -102,7 +107,7 @@ module.exports = {
   },
 
   async deleteJob(req, res) {
-    const id = req.body.id
+    const id = req.params.id
 
     if (!id) {
       res.status(400).send('Empty field')
@@ -119,6 +124,7 @@ module.exports = {
       res.status(200).send("This job was deleted")
 
     } catch (error) {
+      res.status(400).send(error)
       console.log(error);
       return
     }
