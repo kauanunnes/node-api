@@ -98,7 +98,6 @@ module.exports = {
     
 
     const {id} = req.params
-    console.log(req.body);
     let {
       name,
       login,
