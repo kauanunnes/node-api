@@ -7,8 +7,14 @@ const bcrypt = require('bcrypt');
 module.exports = {
   async getUsers(req, res) {
     try {
-      let data = await knexConnection.select('id','name', 'login', 'phone', 'job').table('users')
-
+      let data = await knexConnection.select([
+        'users.id',
+        'users.name',
+        'users.login',
+        'users.phone',
+        'users.admin',
+        'jobs.name as job_occupation' 
+      ]).from('users').leftJoin('jobs', 'users.job', 'jobs.id')
       res.send(data)
     } catch (error) {
       res.status(400).send(error)
@@ -17,13 +23,18 @@ module.exports = {
   },
 
   async getUser(req, res) {
-    const id = req.params.id
+    const { id } = req.params
 
     try {
-      const user = await knexConnection.select('id','name','login','phone','job').where({
-        id
-      }).table('users')
-
+      const user = await knexConnection.select([
+        'users.id',
+        'users.name',
+        'users.login',
+        'users.phone',
+        'users.admin',
+        'jobs.id as job_id', 
+        'jobs.name as job_name',
+      ]).from('users').where({'users.id': id}).leftJoin('jobs', 'users.job', 'jobs.id')
       if (user.length === 0) {
         res.status(400).send("This user doesn't exist.")
         return
