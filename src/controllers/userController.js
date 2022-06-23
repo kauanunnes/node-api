@@ -145,6 +145,7 @@ module.exports = {
       }
       const hash = bcrypt.hashSync(password, 10);
 
+
       const data = await knexConnection.where({
         id
       }).update({
