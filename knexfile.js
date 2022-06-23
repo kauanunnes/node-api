@@ -6,11 +6,8 @@ module.exports = {
   development: {
     client: "pg",
     connection: {
-      address:'localhost',
-      port: '5432',
-      database: process.env.DATABASE_NAME,
-      user:     process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
     },
     pool: {
       min: 2,
