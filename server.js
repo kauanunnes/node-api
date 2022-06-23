@@ -3,7 +3,7 @@ const cors = require('cors')
 
 const app = express()
 
-const port = 3000
+const port = 12020
 
 const router = require('./src/router')
 
